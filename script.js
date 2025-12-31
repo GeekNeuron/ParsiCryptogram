@@ -106,7 +106,7 @@ function renderKeyboard() {
 
     const delBtn = document.createElement('button');
     delBtn.className = 'key-btn delete-key';
-    delBtn.innerHTML = 'پاک';
+    delBtn.innerHTML = 'پاک کردن';
     delBtn.addEventListener('click', () => handleVirtualKeyInput(''));
     keyboardArea.appendChild(delBtn);
 }
