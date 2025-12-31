@@ -1,0 +1,150 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #f0f2f5;
+    --box-bg: #ffffff;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --accent: #6c5ce7;      /* رنگ اصلی بنفش ملایم */
+    --accent-hover: #a29bfe;
+    --correct: #00b894;     /* رنگ سبز موفقیت */
+    --border-radius: 20px;  /* گوشه‌های کاملا گرد */
+    --input-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    direction: rtl;
+}
+
+.container {
+    background-color: var(--box-bg);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05); /* سایه بسیار نرم */
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 0;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    font-size: 0.95rem;
+}
+
+.game-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+/* استایل کلمات */
+.word {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.letter-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+}
+
+.cipher-char {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    font-weight: bold;
+    user-select: none; /* جلوگیری از کپی کردن رمز */
+}
+
+/* استایل اینپوت‌ها */
+input.user-input {
+    width: 40px;
+    height: 50px;
+    text-align: center;
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 22px;
+    border: 2px solid #e1e1e1;
+    border-radius: var(--input-radius);
+    background-color: #fdfdfd;
+    color: var(--text-primary);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    outline: none;
+}
+
+input.user-input:focus {
+    border-color: var(--accent);
+    background-color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(108, 92, 231, 0.15);
+}
+
+/* کلاس برای وقتی جواب درست است */
+input.user-input.solved {
+    border-color: var(--correct);
+    background-color: #e3fdf5;
+    color: var(--correct);
+}
+
+/* دکمه‌ها */
+button {
+    font-family: 'Vazirmatn', sans-serif;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 50px; /* دکمه کپسولی */
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.2s, background-color 0.3s;
+    background-color: var(--accent);
+    color: white;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.message-box {
+    min-height: 30px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: var(--correct);
+    font-size: 1.1rem;
+}
+
+/* حالت موبایل */
+@media (max-width: 600px) {
+    .container { padding: 20px; }
+    .letter-box { width: 32px; }
+    input.user-input { width: 32px; height: 42px; font-size: 18px; }
+    .word { gap: 3px; }
+}
