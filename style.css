@@ -1,30 +1,29 @@
-/* style.css - نسخه نهایی، کامل و بدون حذفیات */
+/* style.css - نسخه نهایی (بدون حروف رمز بالا) */
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
 
 :root {
-    /* --- پالت رنگی --- */
-    --bg-color: #f0f2f5;          /* پس‌زمینه کل صفحه */
-    --box-bg: #ffffff;            /* پس‌زمینه باکس اصلی */
-    --text-primary: #2d3436;      /* رنگ متن اصلی */
-    --text-secondary: #636e72;    /* رنگ متن‌های فرعی */
+    /* پالت رنگی */
+    --bg-color: #f0f2f5;
+    --box-bg: #ffffff;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
     
-    --accent: #6c5ce7;            /* رنگ اصلی (بنفش) */
-    --accent-light: #e0e6fc;      /* رنگ پس‌زمینه سلول انتخاب شده */
-    --accent-hover: #a29bfe;      /* رنگ هاور دکمه‌ها */
+    --accent: #6c5ce7;
+    --accent-light: #e0e6fc;
+    --accent-hover: #a29bfe;
     
-    --correct: #00b894;           /* سبز موفقیت */
-    --error: #ff7675;             /* قرمز خطا/حذف */
+    --correct: #00b894;
+    --error: #ff7675;
     
-    --key-bg: #f1f2f6;            /* پس‌زمینه دکمه‌های کیبورد */
-    --key-used-bg: #dfe6e9;       /* پس‌زمینه دکمه‌های استفاده شده */
-    --key-used-text: #b2bec3;     /* متن دکمه‌های استفاده شده */
+    --key-bg: #f1f2f6;
+    --key-used-bg: #dfe6e9;
+    --key-used-text: #b2bec3;
     
-    /* --- اندازه‌ها --- */
-    --border-radius: 24px;        /* گردی گوشه‌های کانتینر */
-    --input-radius: 14px;         /* گردی گوشه‌های اینپوت */
+    /* تنظیمات گردی */
+    --border-radius: 24px;
+    --input-radius: 14px;
 }
 
-/* تنظیمات پایه */
 * {
     box-sizing: border-box;
 }
@@ -40,17 +39,16 @@ body {
     min-height: 100vh;
     padding: 20px;
     direction: rtl;
-    user-select: none; /* جلوگیری از انتخاب متن */
-    -webkit-tap-highlight-color: transparent; /* حذف هایلایت آبی در موبایل */
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* کانتینر اصلی */
 .container {
     background-color: var(--box-bg);
-    padding: 40px; /* فضای داخلی باز و راحت */
+    padding: 40px;
     border-radius: var(--border-radius);
     box-shadow: 0 15px 35px rgba(0,0,0,0.08);
-    max-width: 900px; /* عرض بیشتر برای جا شدن بهتر کلمات */
+    max-width: 900px;
     width: 100%;
     text-align: center;
     display: flex;
@@ -76,7 +74,6 @@ h1 {
 .game-area {
     display: flex;
     flex-wrap: wrap;
-    /* فاصله زیاد بین کلمات برای خوانایی بهتر */
     gap: 30px; 
     justify-content: center;
     margin-bottom: 30px;
@@ -86,25 +83,21 @@ h1 {
 
 .word {
     display: flex;
-    gap: 6px; /* فاصله بین حروف یک کلمه */
+    gap: 6px; 
     margin-bottom: 15px;
+    /* تراز عمودی برای اینکه کلمات و علائم نگارشی در یک راستا باشند */
+    align-items: flex-end; 
 }
 
 .letter-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 42px; /* عرض ثابت برای هر حرف */
+    width: 42px;
 }
 
-.cipher-char {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-    font-weight: bold;
-}
+/* کلاس .cipher-char حذف شد چون دیگر استفاده نمی‌شود */
 
-/* استایل خانه‌های ورودی */
 input.user-input {
     width: 42px;
     height: 52px;
@@ -118,11 +111,10 @@ input.user-input {
     color: var(--text-primary);
     outline: none;
     cursor: pointer;
-    caret-color: transparent; /* مخفی کردن نشانگر تایپ */
+    caret-color: transparent;
     transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* حالت انتخاب شده (وقتی روی خانه کلیک می‌کنید) */
 input.user-input.active {
     border-color: var(--accent);
     background-color: var(--accent-light);
@@ -130,7 +122,6 @@ input.user-input.active {
     box-shadow: 0 8px 15px rgba(108, 92, 231, 0.2);
 }
 
-/* حالت حل شده (وقتی بازی تمام می‌شود) */
 input.user-input.solved {
     border-color: var(--correct);
     background-color: #e3fdf5;
@@ -138,7 +129,7 @@ input.user-input.solved {
     cursor: default;
 }
 
-/* --- بخش نمایش شعر نهایی (Quote Reveal) --- */
+/* --- بخش نمایش شعر نهایی --- */
 .quote-reveal {
     width: 100%;
     margin: 10px 0 30px 0;
@@ -147,7 +138,6 @@ input.user-input.solved {
     color: var(--text-primary);
     line-height: 1.8;
     
-    /* تنظیمات مخفی بودن اولیه */
     opacity: 0;
     height: 0;
     transform: translateY(15px);
@@ -169,7 +159,7 @@ input.user-input.solved {
 .keyboard-area {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px; /* فاصله بین دکمه‌های کیبورد */
+    gap: 8px;
     justify-content: center;
     margin: 10px 0 30px 0;
     max-width: 750px;
@@ -190,7 +180,7 @@ input.user-input.solved {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 3px 0 rgba(0,0,0,0.05); /* سایه ریز */
+    box-shadow: 0 3px 0 rgba(0,0,0,0.05);
 }
 
 .key-btn:hover {
@@ -203,7 +193,6 @@ input.user-input.solved {
     box-shadow: none;
 }
 
-/* ۱. حروف غیرموجود (کمرنگ و غیرفعال) */
 .key-btn:disabled {
     opacity: 0.25;
     cursor: default;
@@ -212,20 +201,18 @@ input.user-input.solved {
     transform: none !important;
 }
 
-/* ۲. حروف استفاده شده در جدول (خاکستری تیره) */
 .key-btn.is-used {
-    opacity: 1; /* دیده شود */
+    opacity: 1;
     background-color: var(--key-used-bg);
     color: var(--key-used-text);
     border: 1px solid #ced6e0;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* حالت فرو رفته */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
     cursor: not-allowed;
     transform: none !important;
 }
 
-/* ۳. دکمه پاک کردن (قرمز) */
 .key-btn.delete-key {
-    width: auto; /* عرض خودکار متناسب با متن */
+    width: auto;
     padding: 0 20px;
     background-color: var(--error);
     color: white;
@@ -284,16 +271,15 @@ input.user-input.solved {
 /* --- حالت موبایل (Responsive) --- */
 @media (max-width: 600px) {
     .container {
-        padding: 20px 15px; /* پدینگ موبایل */
+        padding: 20px 15px;
         min-height: 100vh;
-        border-radius: 20px; /* حفظ گردی */
+        border-radius: 20px;
         margin: 10px; 
         width: auto;
     }
 
     h1 { font-size: 1.6rem; }
     
-    /* تنظیم فاصله در موبایل */
     .game-area { gap: 20px; } 
     
     .letter-box { width: 34px; }
@@ -309,7 +295,7 @@ input.user-input.solved {
     
     .keyboard-area {
         gap: 5px;
-        margin-bottom: 60px; /* فاصله برای اسکرول راحت */
+        margin-bottom: 60px; 
     }
     
     .key-btn {
@@ -319,7 +305,6 @@ input.user-input.solved {
         border-radius: 10px;
     }
     
-    /* تنظیم دکمه پاک کردن در موبایل */
     .key-btn.delete-key {
         font-size: 14px;
         padding: 0 14px;
