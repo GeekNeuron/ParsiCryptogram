@@ -1,19 +1,33 @@
+/* style.css - نسخه نهایی و کامل */
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
 
 :root {
-    --bg-color: #f0f2f5;
-    --box-bg: #ffffff;
-    --text-primary: #2d3436;
-    --text-secondary: #636e72;
-    --accent: #6c5ce7;
-    --accent-light: #e0e6fc;
-    --accent-hover: #a29bfe;
-    --correct: #00b894;
-    --border-radius: 20px;
-    --input-radius: 12px;
+    /* پالت رنگی */
+    --bg-color: #f0f2f5;          /* پس‌زمینه کل صفحه */
+    --box-bg: #ffffff;            /* پس‌زمینه باکس بازی */
+    --text-primary: #2d3436;      /* رنگ متن اصلی */
+    --text-secondary: #636e72;    /* رنگ متن‌های کم‌رنگ (مثل رمزها) */
+    
+    --accent: #6c5ce7;            /* رنگ اصلی (بنفش) */
+    --accent-light: #e0e6fc;      /* رنگ پس‌زمینه خانه انتخاب شده */
+    --accent-hover: #a29bfe;      /* رنگ هاور دکمه‌ها */
+    
+    --correct: #00b894;           /* سبز (موفقیت) */
+    --error: #ff7675;             /* قرمز (برای دکمه حذف) */
+    
+    --key-bg: #f1f2f6;            /* پس‌زمینه دکمه‌های کیبورد */
+    --key-used-bg: #dfe6e9;       /* پس‌زمینه دکمه‌های استفاده شده */
+    --key-used-text: #b2bec3;     /* متن دکمه‌های استفاده شده */
+    
+    /* تنظیمات گردی */
+    --border-radius: 24px;        /* گردی کادرهای اصلی */
+    --input-radius: 14px;         /* گردی اینپوت‌ها */
 }
 
-* { box-sizing: border-box; }
+/* تنظیمات پایه */
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: 'Vazirmatn', sans-serif;
@@ -26,151 +40,284 @@ body {
     min-height: 100vh;
     padding: 20px;
     direction: rtl;
-    user-select: none;
+    user-select: none; /* جلوگیری از انتخاب متن */
+    -webkit-tap-highlight-color: transparent; /* حذف هایلایت آبی در موبایل */
 }
 
+/* کانتینر اصلی */
 .container {
     background-color: var(--box-bg);
-    padding: 30px;
+    padding: 35px;
     border-radius: var(--border-radius);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-    max-width: 800px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.06); /* سایه نرم */
+    max-width: 850px;
     width: 100%;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: all 0.3s ease;
 }
 
-h1 { margin-top: 0; margin-bottom: 5px; font-size: 1.8rem; }
-.subtitle { color: var(--text-secondary); margin-bottom: 25px; font-size: 0.9rem; }
+h1 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
 
+.subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+}
+
+/* --- بخش صفحه بازی (Board) --- */
 .game-area {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 15px; /* فاصله بین کلمات */
     justify-content: center;
     margin-bottom: 20px;
     width: 100%;
 }
 
-.word { display: flex; gap: 4px; margin-bottom: 10px; }
+.word {
+    display: flex;
+    gap: 5px; /* فاصله بین حروف */
+    margin-bottom: 10px;
+}
 
 .letter-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 38px;
+    width: 40px;
 }
 
 .cipher-char {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-secondary);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     font-weight: bold;
 }
 
+/* استایل خانه‌های ورودی */
 input.user-input {
-    width: 38px;
-    height: 48px;
+    width: 40px;
+    height: 50px;
     text-align: center;
     font-family: 'Vazirmatn', sans-serif;
-    font-size: 20px;
+    font-size: 22px;
+    font-weight: bold;
     border: 2px solid #e1e1e1;
     border-radius: var(--input-radius);
     background-color: #fdfdfd;
     color: var(--text-primary);
     outline: none;
     cursor: pointer;
-    transition: all 0.2s;
-    caret-color: transparent;
+    caret-color: transparent; /* مخفی کردن نشانگر تایپ */
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* حالت انتخاب شده (Active) */
 input.user-input.active {
     border-color: var(--accent);
     background-color: var(--accent-light);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(108, 92, 231, 0.2);
 }
 
+/* حالت حل شده (Solved) */
 input.user-input.solved {
     border-color: var(--correct);
     background-color: #e3fdf5;
     color: var(--correct);
+    cursor: default;
 }
 
+/* --- بخش نمایش شعر نهایی (Quote Reveal) --- */
+.quote-reveal {
+    width: 100%;
+    margin: 5px 0 25px 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.8;
+    
+    /* تنظیمات انیمیشن مخفی بودن */
+    opacity: 0;
+    height: 0;
+    transform: translateY(15px);
+    overflow: hidden;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* انیمیشن فنری نرم */
+}
+
+/* وقتی کلاس show اضافه می‌شود */
+.quote-reveal.show {
+    opacity: 1;
+    height: auto;
+    transform: translateY(0);
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 16px;
+    border-right: 5px solid var(--correct);
+}
+
+/* --- بخش کیبورد مجازی --- */
 .keyboard-area {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     justify-content: center;
-    margin: 20px 0;
-    max-width: 600px;
+    margin: 10px 0 25px 0;
+    max-width: 650px;
 }
 
 .key-btn {
     font-family: 'Vazirmatn', sans-serif;
-    width: 40px;
-    height: 45px;
+    width: 42px;
+    height: 48px;
     border: none;
-    border-radius: 10px;
-    background-color: #f1f2f6;
-    color: #2d3436;
-    font-size: 18px;
+    border-radius: 12px;
+    background-color: var(--key-bg);
+    color: var(--text-primary);
+    font-size: 19px;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 3px 0 rgba(0,0,0,0.05); /* سایه سه‌بعدی ریز */
 }
 
-.key-btn:hover { background-color: #dfe4ea; }
-.key-btn:active { transform: scale(0.95); }
+.key-btn:hover {
+    background-color: #dfe4ea;
+    transform: translateY(-1px);
+}
 
-/* --- استایل جدید برای دکمه‌های غیرفعال --- */
+.key-btn:active {
+    transform: scale(0.95);
+    box-shadow: none;
+}
+
+/* ۱. حروفی که کلاً در شعر نیستند (بسیار کمرنگ) */
 .key-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    background-color: #f1f2f6; /* رنگ پس‌زمینه خنثی */
-    color: #b2bec3;
-    transform: none !important; /* حذف انیمیشن کلیک */
-}
-.key-btn:disabled:hover {
-    background-color: #f1f2f6; /* جلوگیری از تغییر رنگ هاور */
+    opacity: 0.2;
+    cursor: default;
+    background-color: transparent;
+    box-shadow: none;
+    transform: none !important;
 }
 
+/* ۲. حروفی که در شعر هستند اما استفاده شده‌اند (خاکستری تیره) */
+.key-btn.is-used {
+    opacity: 1; /* باید دیده شود */
+    background-color: var(--key-used-bg);
+    color: var(--key-used-text);
+    border: 1px solid #ced6e0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); /* فرورفتگی */
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* دکمه پاک کردن (قرمز) */
 .key-btn.delete-key {
     width: auto;
-    padding: 0 15px;
-    background-color: #ff7675;
+    padding: 0 16px;
+    background-color: var(--error);
     color: white;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(255, 118, 117, 0.3);
 }
-.key-btn.delete-key:hover { background-color: #d63031; }
 
+.key-btn.delete-key:hover {
+    background-color: #d63031;
+    transform: translateY(-2px);
+}
+
+.key-btn.delete-key:active {
+    transform: scale(0.95);
+}
+
+/* --- پیام موفقیت --- */
 .message-box {
-    min-height: 25px;
-    margin-bottom: 15px;
+    min-height: 28px;
+    margin-bottom: 10px;
     font-weight: bold;
     color: var(--correct);
+    font-size: 1.1rem;
 }
 
-.action-btn {
+/* دکمه شروع مجدد */
+.controls {
+    margin-top: 10px;
+}
+
+#new-game-btn {
     font-family: 'Vazirmatn', sans-serif;
-    padding: 12px 28px;
+    padding: 12px 32px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     font-size: 16px;
+    font-weight: bold;
     background-color: var(--accent);
     color: white;
     transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
 }
-.action-btn:hover { background-color: var(--accent-hover); }
 
+#new-game-btn:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+}
+
+#new-game-btn:active {
+    transform: scale(0.95);
+}
+
+/* --- حالت موبایل (Responsive) --- */
 @media (max-width: 600px) {
-    .container { padding: 15px; }
-    .letter-box { width: 30px; }
-    input.user-input { width: 30px; height: 40px; font-size: 16px; }
-    .key-btn { width: 32px; height: 38px; font-size: 16px; margin: 2px;}
+    .container {
+        padding: 20px 10px;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+        justify-content: flex-start; /* بالا قرار گرفتن محتوا */
+    }
+
+    h1 { font-size: 1.5rem; }
+    
+    .game-area { gap: 10px; }
+    
+    .letter-box { width: 32px; }
+    
+    input.user-input {
+        width: 32px;
+        height: 42px;
+        font-size: 18px;
+        border-width: 1.5px;
+    }
+    
+    .quote-reveal { font-size: 1.1rem; padding: 15px; }
+    
+    .keyboard-area {
+        gap: 4px;
+        margin-bottom: 40px;
+    }
+    
+    .key-btn {
+        width: 34px;
+        height: 42px;
+        font-size: 16px;
+        border-radius: 8px;
+    }
+    
+    .key-btn.delete-key {
+        font-size: 13px;
+        padding: 0 12px;
+    }
 }
