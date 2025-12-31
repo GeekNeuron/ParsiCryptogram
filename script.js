@@ -2,12 +2,14 @@ import { quotes } from './data.js';
 
 const persianAlphabet = "ابتثجحخدذرزژسشصضطظعغفقکگلمنوهی".split('');
 let currentQuote = "";
-let cipherMap = {}; 
-let selectedCipherChar = null; 
+let cipherMap = {};
+let selectedCipherChar = null;
 
+// المان‌های DOM
 const board = document.getElementById('game-board');
 const keyboardArea = document.getElementById('virtual-keyboard');
 const messageBox = document.getElementById('message');
+const quoteDisplay = document.getElementById('quote-display'); // المنت جدید
 const newGameBtn = document.getElementById('new-game-btn');
 
 function initGame() {
@@ -17,8 +19,13 @@ function initGame() {
 
     createCipher();
     renderBoard();
-    renderKeyboard(); // این تابع حالا هوشمند شده است
+    renderKeyboard();
+    updateKeyboardState();
+    
+    // پاک کردن پیام‌ها و مخفی کردن شعر قبلی
     messageBox.innerText = "";
+    quoteDisplay.innerText = "";
+    quoteDisplay.classList.remove('show');
 }
 
 function createCipher() {
@@ -50,11 +57,14 @@ function renderBoard() {
 
                 const input = document.createElement('input');
                 input.className = 'user-input';
-                input.readOnly = true; 
+                input.readOnly = true;
                 input.dataset.cipher = encryptedChar;
                 input.dataset.real = char;
 
-                input.addEventListener('click', () => selectCell(encryptedChar));
+                input.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectCell(encryptedChar);
+                });
                 
                 letterBox.appendChild(cipherSpan);
                 letterBox.appendChild(input);
@@ -74,21 +84,17 @@ function renderBoard() {
 
 function renderKeyboard() {
     keyboardArea.innerHTML = '';
-    
-    // شناسایی حروفی که در جمله فعلی وجود دارند
-    // ما از Set استفاده می‌کنیم تا حروف تکراری حذف شوند و جستجو سریع باشد
     const validCharsInGame = new Set(currentQuote.split(''));
 
     persianAlphabet.forEach(char => {
         const btn = document.createElement('button');
         btn.className = 'key-btn';
         btn.innerText = char;
+        btn.dataset.char = char;
         
-        // اگر حرف در جمله اصلی نبود، دکمه را غیرفعال کن
         if (!validCharsInGame.has(char)) {
             btn.disabled = true; 
         } else {
-            // فقط اگر دکمه فعال بود ایونت کلیک داشته باشد
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 handleVirtualKeyInput(char);
@@ -98,21 +104,44 @@ function renderKeyboard() {
         keyboardArea.appendChild(btn);
     });
 
-    // دکمه پاک کردن (همیشه فعال است)
     const delBtn = document.createElement('button');
     delBtn.className = 'key-btn delete-key';
-    delBtn.innerHTML = 'پاک‌کردن';
+    delBtn.innerHTML = 'پاک';
     delBtn.addEventListener('click', () => handleVirtualKeyInput(''));
     keyboardArea.appendChild(delBtn);
 }
 
+function updateKeyboardState() {
+    const usedLetters = new Set();
+    const inputs = document.querySelectorAll('.user-input');
+    inputs.forEach(input => {
+        if (input.value) {
+            usedLetters.add(input.value);
+        }
+    });
+
+    const keys = document.querySelectorAll('.key-btn:not(.delete-key)');
+    const validCharsInGame = new Set(currentQuote.split(''));
+
+    keys.forEach(btn => {
+        const char = btn.dataset.char;
+        if (!validCharsInGame.has(char)) return;
+
+        if (usedLetters.has(char)) {
+            btn.disabled = true;
+            btn.classList.add('is-used');
+        } else {
+            btn.disabled = false;
+            btn.classList.remove('is-used');
+        }
+    });
+}
+
 function selectCell(cipherChar) {
     selectedCipherChar = cipherChar;
-    
     document.querySelectorAll('.user-input').forEach(inp => {
         inp.classList.remove('active');
     });
-
     const targets = document.querySelectorAll(`input[data-cipher="${cipherChar}"]`);
     targets.forEach(inp => {
         inp.classList.add('active');
@@ -123,13 +152,15 @@ function handleVirtualKeyInput(charToInsert) {
     if (!selectedCipherChar) return;
 
     const targets = document.querySelectorAll(`input[data-cipher="${selectedCipherChar}"]`);
-    
     targets.forEach(input => {
         input.value = charToInsert;
-        input.style.transform = "scale(1.1)";
-        setTimeout(() => input.style.transform = "scale(1)", 100);
+        if (charToInsert !== '') {
+            input.style.transform = "scale(1.1)";
+            setTimeout(() => input.style.transform = "scale(1)", 100);
+        }
     });
 
+    updateKeyboardState();
     checkWin();
 }
 
@@ -144,15 +175,26 @@ function checkWin() {
     });
 
     if (isFull && isCorrect) {
-        messageBox.innerText = "✨ تبریک! معما حل شد. ✨";
+        messageBox.innerText = "✨ عالی بود! معما حل شد. ✨";
+        
+        // --- نمایش شعر نهایی ---
+        quoteDisplay.innerText = currentQuote;
+        quoteDisplay.classList.add('show');
+        // ---------------------
+
         inputs.forEach(inp => {
             inp.classList.add('solved');
             inp.classList.remove('active');
         });
-        selectedCipherChar = null; 
+        selectedCipherChar = null;
+        
+        const allKeys = document.querySelectorAll('.key-btn');
+        allKeys.forEach(k => k.disabled = true);
+
     } else {
         messageBox.innerText = "";
         inputs.forEach(inp => inp.classList.remove('solved'));
+        quoteDisplay.classList.remove('show'); // پنهان کردن اگر کاربر پاک کرد
     }
 }
 
