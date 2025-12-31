@@ -1,6 +1,6 @@
 import { quotes } from './data.js';
 
-const persianAlphabet = "ابتثجحخدذرزژسشصضطظعغفقکگلمنوهی".split('');
+const persianAlphabet = "ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی".split('');
 let currentQuote = "";
 let cipherMap = {};
 let selectedCipherChar = null;
