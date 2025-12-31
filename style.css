@@ -6,10 +6,9 @@
     --text-primary: #2d3436;
     --text-secondary: #636e72;
     --accent: #6c5ce7;
-    --accent-light: #e0e6fc; /* رنگ پس‌زمینه حالت انتخاب */
+    --accent-light: #e0e6fc;
     --accent-hover: #a29bfe;
     --correct: #00b894;
-    --error: #fab1a0;
     --border-radius: 20px;
     --input-radius: 12px;
 }
@@ -27,7 +26,7 @@ body {
     min-height: 100vh;
     padding: 20px;
     direction: rtl;
-    user-select: none; /* جلوگیری از انتخاب متن */
+    user-select: none;
 }
 
 .container {
@@ -71,7 +70,6 @@ h1 { margin-top: 0; margin-bottom: 5px; font-size: 1.8rem; }
     font-weight: bold;
 }
 
-/* استایل اینپوت‌ها */
 input.user-input {
     width: 38px;
     height: 48px;
@@ -85,10 +83,9 @@ input.user-input {
     outline: none;
     cursor: pointer;
     transition: all 0.2s;
-    caret-color: transparent; /* مخفی کردن نشانگر تایپ */
+    caret-color: transparent;
 }
 
-/* وقتی یک خانه انتخاب می‌شود */
 input.user-input.active {
     border-color: var(--accent);
     background-color: var(--accent-light);
@@ -102,7 +99,6 @@ input.user-input.solved {
     color: var(--correct);
 }
 
-/* کیبورد مجازی */
 .keyboard-area {
     display: flex;
     flex-wrap: wrap;
@@ -131,7 +127,18 @@ input.user-input.solved {
 .key-btn:hover { background-color: #dfe4ea; }
 .key-btn:active { transform: scale(0.95); }
 
-/* دکمه خاص برای حذف */
+/* --- استایل جدید برای دکمه‌های غیرفعال --- */
+.key-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background-color: #f1f2f6; /* رنگ پس‌زمینه خنثی */
+    color: #b2bec3;
+    transform: none !important; /* حذف انیمیشن کلیک */
+}
+.key-btn:disabled:hover {
+    background-color: #f1f2f6; /* جلوگیری از تغییر رنگ هاور */
+}
+
 .key-btn.delete-key {
     width: auto;
     padding: 0 15px;
@@ -161,7 +168,6 @@ input.user-input.solved {
 }
 .action-btn:hover { background-color: var(--accent-hover); }
 
-/* موبایل */
 @media (max-width: 600px) {
     .container { padding: 15px; }
     .letter-box { width: 30px; }
