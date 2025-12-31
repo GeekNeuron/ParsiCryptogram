@@ -3,9 +3,8 @@ import { quotes } from './data.js';
 const persianAlphabet = "ابتثجحخدذرزژسشصضطظعغفقکگلمنوهی".split('');
 let currentQuote = "";
 let cipherMap = {}; 
-let selectedCipherChar = null; // نگه داشتن حرف رمزِ انتخاب شده
+let selectedCipherChar = null; 
 
-// المان‌های DOM
 const board = document.getElementById('game-board');
 const keyboardArea = document.getElementById('virtual-keyboard');
 const messageBox = document.getElementById('message');
@@ -18,7 +17,7 @@ function initGame() {
 
     createCipher();
     renderBoard();
-    renderKeyboard();
+    renderKeyboard(); // این تابع حالا هوشمند شده است
     messageBox.innerText = "";
 }
 
@@ -30,7 +29,6 @@ function createCipher() {
     });
 }
 
-// ساختن برد بازی
 function renderBoard() {
     board.innerHTML = '';
     const words = currentQuote.split(' ');
@@ -52,11 +50,10 @@ function renderBoard() {
 
                 const input = document.createElement('input');
                 input.className = 'user-input';
-                input.readOnly = true; // غیرفعال کردن تایپ مستقیم
+                input.readOnly = true; 
                 input.dataset.cipher = encryptedChar;
                 input.dataset.real = char;
 
-                // رویداد کلیک برای انتخاب خانه
                 input.addEventListener('click', () => selectCell(encryptedChar));
                 
                 letterBox.appendChild(cipherSpan);
@@ -75,59 +72,60 @@ function renderBoard() {
     });
 }
 
-// ساختن کیبورد مجازی
 function renderKeyboard() {
     keyboardArea.innerHTML = '';
     
-    // دکمه‌های حروف
+    // شناسایی حروفی که در جمله فعلی وجود دارند
+    // ما از Set استفاده می‌کنیم تا حروف تکراری حذف شوند و جستجو سریع باشد
+    const validCharsInGame = new Set(currentQuote.split(''));
+
     persianAlphabet.forEach(char => {
         const btn = document.createElement('button');
         btn.className = 'key-btn';
         btn.innerText = char;
         
-        // وقتی روی کیبورد کلیک شد
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation(); // جلوگیری از پریدن فوکوس
-            handleVirtualKeyInput(char);
-        });
+        // اگر حرف در جمله اصلی نبود، دکمه را غیرفعال کن
+        if (!validCharsInGame.has(char)) {
+            btn.disabled = true; 
+        } else {
+            // فقط اگر دکمه فعال بود ایونت کلیک داشته باشد
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleVirtualKeyInput(char);
+            });
+        }
         
         keyboardArea.appendChild(btn);
     });
 
-    // دکمه پاک کردن
+    // دکمه پاک کردن (همیشه فعال است)
     const delBtn = document.createElement('button');
     delBtn.className = 'key-btn delete-key';
-    delBtn.innerHTML = 'پاک‌کردن'; // یا آیکون سطل زباله
+    delBtn.innerHTML = 'پاک‌کردن';
     delBtn.addEventListener('click', () => handleVirtualKeyInput(''));
     keyboardArea.appendChild(delBtn);
 }
 
-// تابع انتخاب سلول (وقتی روی یک خانه در برد کلیک می‌شود)
 function selectCell(cipherChar) {
     selectedCipherChar = cipherChar;
     
-    // برداشتن کلاس اکتیو از همه
     document.querySelectorAll('.user-input').forEach(inp => {
         inp.classList.remove('active');
     });
 
-    // اضافه کردن کلاس اکتیو به تمام خانه‌هایی که همین رمز را دارند
     const targets = document.querySelectorAll(`input[data-cipher="${cipherChar}"]`);
     targets.forEach(inp => {
         inp.classList.add('active');
     });
 }
 
-// تابع اعمال ورودی از کیبورد مجازی
 function handleVirtualKeyInput(charToInsert) {
-    if (!selectedCipherChar) return; // اگر هیچ خانه‌ای انتخاب نشده، کاری نکن
+    if (!selectedCipherChar) return;
 
-    // پیدا کردن تمام خانه‌های مربوط به حرف رمز انتخاب شده
     const targets = document.querySelectorAll(`input[data-cipher="${selectedCipherChar}"]`);
     
     targets.forEach(input => {
         input.value = charToInsert;
-        // انیمیشن کوچک برای بازخورد
         input.style.transform = "scale(1.1)";
         setTimeout(() => input.style.transform = "scale(1)", 100);
     });
@@ -151,7 +149,7 @@ function checkWin() {
             inp.classList.add('solved');
             inp.classList.remove('active');
         });
-        selectedCipherChar = null; // غیرفعال کردن انتخاب
+        selectedCipherChar = null; 
     } else {
         messageBox.innerText = "";
         inputs.forEach(inp => inp.classList.remove('solved'));
